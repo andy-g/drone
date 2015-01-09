@@ -14,6 +14,12 @@
 				<i class="fa fa-sliders"></i>
 				<span>Settings</span>
 			</a>
+			<a class="pure-button pure-button-primary" ng-href="/{{ repo | fullPath }}/settings">
+				<!-- <i class="fa fa-th-large"></i>
+				<span>grid view</span> -->
+				<i class="fa fa-th-list" style="margin-right:-10px;"></i>
+				<!-- <span>list view</span> -->
+			</a>
 		</div>
 
 		<a href="/"><span class="fa fa-th"></span></a>
@@ -33,6 +39,29 @@
 			<h1>This will be your commit stream</h1>
 			<p>Add a .drone.yml file and make a commit to trigger a build</p>
 			<div><i class="fa fa-file-code-o"></i></div>
+		</section>
+
+		<section style="border:0px;">
+			<div class="cards">
+				<table class="ag-commits">
+					<thead>
+						<tr>
+							<th>Build</th><th>Message</th><th>Commit</th><th>Committer</th><th>Duration</th><th>Finished</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="commit in commits" data-status="{{ commit.status }}">
+							<!-- <td><a href='/{{ repo | fullPath }}/{{ commit.branch }}/{{ commit.sha }}'>{{ commit.sha.substr(0,7) }}</a> ({{ commit.branch }})</td> -->
+							<td><a href='/{{ repo | fullPath }}/{{ commit.branch }}/{{ commit.sha }}'>{{ commit.id }}</a></td>
+							<td>{{ commit.message }}</td><td><a href='{{ repo.url }}/commit/{{ commit.sha }}'>{{ commit.sha | shortHash }}</a> (<a href='{{ repo.url }}/tree/{{ commit.branch }}'>{{ commit.branch }}</a>)</td>
+							<td>{{ commit.author }}</td>
+							<td title="{{ commit.duration }} seconds">{{ commit.duration | toDuration }}</td>
+							<td ng-if="commit.finished_at != 0" title="{{ commit.finished_at * 1000 | date:'medium' }}">{{ commit.finished_at | fromNow }}</td>
+							<td ng-if="commit.finished_at == 0">-</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</section>
 
 		<section ng-repeat="group in commits | filter: { pull_request: '' } | unique: 'branch'">
