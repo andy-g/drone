@@ -12,13 +12,15 @@
 		<div class="options" ng-if="repo.role.admin">
 			<a class="pure-button pure-button-primary" ng-href="/{{ repo | fullPath }}/settings">
 				<i class="fa fa-sliders"></i>
-				<span>Settings</span>
+				<span style="margin-left:10px;">Settings</span>
 			</a>
-			<a class="pure-button pure-button-primary" ng-href="/{{ repo | fullPath }}/settings">
-				<!-- <i class="fa fa-th-large"></i>
-				<span>grid view</span> -->
+			<a ng-if="layout == 'row'" class="pure-button pure-button-primary" ng-click="setLayout('grid')">
+				<i class="fa fa-th-large" style="margin-right:-10px;"></i>
+				<!-- <span>grid view</span> -->
+			</a>
+			<a ng-if="layout == 'grid'" class="pure-button pure-button-primary" ng-click="setLayout('row')">
 				<i class="fa fa-th-list" style="margin-right:-10px;"></i>
-				<!-- <span>list view</span> -->
+				<!-- <span style="margin-left:10px;">list view</span> -->
 			</a>
 		</div>
 
@@ -41,8 +43,22 @@
 			<div><i class="fa fa-file-code-o"></i></div>
 		</section>
 
-		<section style="border:0px;">
+		<section ng-if="(commits).length!=0 && layout == 'row'" style="border:0px;">
 			<div class="cards">
+				<nav>
+					<a class="pure-button" ng-class="{active: build_filter=='build_history'}" ng-click="setCommitFilter('build_history')">
+						<i class="fa fa-history"></i>
+						<span>Build History</span>
+					</a>
+					<a class="pure-button" ng-if="(commits | pullRequests).length!=0" ng-class="{active: build_filter=='pull_requests'}" ng-click="setCommitFilter('pull_requests')">
+						<i class="fa fa-code-fork"></i>
+						<span>Pull Requests</span>
+					</a>
+					<a class="pure-button" ng-class="{active: build_filter=='branch_summary'}" ng-click="setCommitFilter('branch_summary')">
+						<i class="fa fa-code-fork"></i>
+						<span>Branch Summary</span>
+					</a>
+				</nav>
 				<table class="ag-commits">
 					<thead>
 						<tr>
@@ -50,8 +66,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="commit in commits" data-status="{{ commit.status }}">
-							<!-- <td><a href='/{{ repo | fullPath }}/{{ commit.branch }}/{{ commit.sha }}'>{{ commit.sha.substr(0,7) }}</a> ({{ commit.branch }})</td> -->
+						<tr ng-repeat="commit in filteredCommits() | limitTo:25" data-status="{{ commit.status }}">
 							<td><a href='/{{ repo | fullPath }}/{{ commit.branch }}/{{ commit.sha }}'>{{ commit.id }}</a></td>
 							<td>{{ commit.message }}</td><td><a href='{{ repo.url }}/commit/{{ commit.sha }}'>{{ commit.sha | shortHash }}</a> (<a href='{{ repo.url }}/tree/{{ commit.branch }}'>{{ commit.branch }}</a>)</td>
 							<td>{{ commit.author }}</td>
@@ -64,7 +79,7 @@
 			</div>
 		</section>
 
-		<section ng-repeat="group in commits | filter: { pull_request: '' } | unique: 'branch'">
+		<section ng-if="layout == 'grid'" ng-repeat="group in commits | filter: { pull_request: '' } | unique: 'branch'">
 			<div class="pure-g cards">
 				<h2 class="pure-u-1" style="font-size:22px;margin-bottom:20px;"><i class="fa fa-code-fork"></i> {{group.branch}}</h2>
 				<a class="pure-u-1 pure-u-md-1-4 pure-u-lg-1-4 pure-u-xl-1-4 card card" ng-href="/{{ repo | fullPath }}/{{ commit.branch }}/{{ commit.sha }}" ng-repeat="commit in commits | filter: { branch: group.branch } | limitTo:4" data-status="{{ commit.status }}">
@@ -79,7 +94,7 @@
 			</div>
 		</section>
 
-		<section ng-if="(commits | pullRequests).length!=0">
+		<section ng-if="(commits | pullRequests).length!=0 && layout == 'grid'"">
 			<div class="pure-g cards">
 				<h2 class="pure-u-1" style="font-size:22px;margin-bottom:20px;"><i class="fa fa-code-fork"></i> Pull Requests</h2>
 				<a class="pure-u-1 pure-u-md-1-4 pure-u-lg-1-4 pure-u-xl-1-4 card card" ng-href="/{{ repo | fullPath }}/{{ commit.branch }}/{{ commit.sha }}" ng-repeat="commit in commits | pullRequests | limitTo:4" data-status="{{ commit.status }}">

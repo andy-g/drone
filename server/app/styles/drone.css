@@ -1831,3 +1831,21 @@ table.ag-commits td {
     padding: 5px 20px 5px 0;
     vertical-align: top;
 }
+
+.cards nav {
+    font-size:13px;
+    padding-left: 0px;
+    line-height: initial;
+    min-height:initial;
+    margin-bottom:10px;
+    border-color:#e0e0e0;
+}
+
+.cards nav .pure-button {
+    background: #f5f5f5;
+    color: rgba(0,0,0,.8);
+}
+
+.cards nav .pure-button.active {
+    background: #e0e0e0;
+}

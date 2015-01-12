@@ -1,8 +1,10 @@
 'use strict';
 
-angular.module('app').controller("RepoController", function($scope, $http, $routeParams, $route, repos, feed, repo) {
+angular.module('app').controller("RepoController", function($scope, $filter, $http, $routeParams, $route, repos, feed, repo) {
 	$scope.repo = repo;
 	$scope.activating = false;
+	$scope.build_filter = 'build_history';
+	$scope.layout = 'row';
 
 	// subscribes to the global feed to receive
 	// build status updates.
@@ -69,6 +71,30 @@ angular.module('app').controller("RepoController", function($scope, $http, $rout
 	//			console.log(error);
 	//		});
 	//};
+
+	$scope.setCommitFilter = function(filter) {
+		$scope.build_filter = filter;
+	}
+
+	$scope.setLayout = function(layout) {
+		$scope.layout = layout;
+	}
+
+	$scope.filteredCommits = function() {
+		var filteredCommits;
+		if ($scope.build_filter == 'branch_summary') {
+			filteredCommits = $filter('unique')($scope.commits, 'branch');
+		}
+		else if ($scope.build_filter == 'pull_requests') {
+			filteredCommits = $filter('pullRequests')($scope.commits);
+			filteredCommits = $filter('unique')(filteredCommits, 'pull_request');
+		}
+		else {
+			filteredCommits = $filter('filter')($scope.commits, { pull_request: '' });
+		}
+
+		return filteredCommits;
+	}
 
 });
 
