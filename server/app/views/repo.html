@@ -9,8 +9,8 @@
 
 <article id="repopage">
 	<nav>
-		<div class="options" ng-if="repo.role.admin">
-			<a class="pure-button pure-button-primary" ng-href="/{{ repo | fullPath }}/settings">
+		<div class="options">
+			<a ng-if="repo.role.admin" class="pure-button pure-button-primary" ng-href="/{{ repo | fullPath }}/settings">
 				<i class="fa fa-sliders"></i>
 				<span style="margin-left:10px;">Settings</span>
 			</a>
@@ -68,9 +68,14 @@
 					<tbody>
 						<tr ng-repeat="commit in filteredCommits() | limitTo:25" data-status="{{ commit.status }}">
 							<td><a href='/{{ repo | fullPath }}/{{ commit.branch }}/{{ commit.sha }}'>{{ commit.id }}</a></td>
-							<td>{{ commit.message }}</td><td><a href='{{ repo.url }}/commit/{{ commit.sha }}'>{{ commit.sha | shortHash }}</a> (<a href='{{ repo.url }}/tree/{{ commit.branch }}'>{{ commit.branch }}</a>)</td>
+							<td>{{ commit.message }}</td>
+							<td><a href='{{ repo.url }}/commit/{{ commit.sha }}'>{{ commit.sha | shortHash }}</a> (<a href='{{ repo.url }}/tree/{{ commit.branch }}'>{{ commit.branch }}</a>)</td>
 							<td>{{ commit.author }}</td>
-							<td title="{{ commit.duration }} seconds">{{ commit.duration | toDuration }}</td>
+
+							<td ng-if="commit.finished_at != 0" title="{{ commit.duration }} seconds">{{ commit.duration | toDuration }}</td>
+							<td ng-if="commit.finished_at == 0 && commit.started_at != 0">{{ commit.started_at | fromNow }}</td>
+							<td ng-if="commit.finished_at == 0 && commit.started_at == 0">-</td>
+
 							<td ng-if="commit.finished_at != 0" title="{{ commit.finished_at * 1000 | date:'medium' }}">{{ commit.finished_at | fromNow }}</td>
 							<td ng-if="commit.finished_at == 0">-</td>
 						</tr>

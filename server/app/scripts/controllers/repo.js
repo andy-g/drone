@@ -4,7 +4,7 @@ angular.module('app').controller("RepoController", function($scope, $filter, $ht
 	$scope.repo = repo;
 	$scope.activating = false;
 	$scope.build_filter = 'build_history';
-	$scope.layout = 'row';
+	$scope.layout = 'grid';
 
 	// subscribes to the global feed to receive
 	// build status updates.
@@ -90,7 +90,8 @@ angular.module('app').controller("RepoController", function($scope, $filter, $ht
 			filteredCommits = $filter('unique')(filteredCommits, 'pull_request');
 		}
 		else {
-			filteredCommits = $filter('filter')($scope.commits, { pull_request: '' });
+			// filteredCommits = $filter('filter')($scope.commits, { pull_request: '' }, true);
+			filteredCommits = $scope.commits;
 		}
 
 		return filteredCommits;
