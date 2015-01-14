@@ -82,21 +82,24 @@ angular.module('app').controller("RepoController", function($scope, $filter, $ht
 
 	$scope.filteredCommits = function() {
 		var filteredCommits;
-		if ($scope.build_filter == 'branch_summary') {
-			filteredCommits = $filter('unique')($scope.commits, 'branch');
-		}
-		else if ($scope.build_filter == 'pull_requests') {
-			filteredCommits = $filter('pullRequests')($scope.commits);
-			filteredCommits = $filter('unique')(filteredCommits, 'pull_request');
-		}
-		else {
-			// filteredCommits = $filter('filter')($scope.commits, { pull_request: '' }, true);
-			filteredCommits = $scope.commits;
+		switch ($scope.build_filter) {
+			// Latest commit for each branch (excluding PR branches)
+			case 'branch_summary':
+				filteredCommits = $filter('filter')($scope.commits, { pull_request: '' }, true);
+				filteredCommits = $filter('unique')($scope.commits, 'branch');
+				break;
+			// Latest commit for each PR
+			case 'pull_requests':
+				filteredCommits = $filter('pullRequests')($scope.commits);
+				filteredCommits = $filter('unique')(filteredCommits, 'pull_request');
+				break;
+			// All commits for a full build history
+			default:
+				filteredCommits = $scope.commits;
 		}
 
 		return filteredCommits;
 	}
-
 });
 
 
