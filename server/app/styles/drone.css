@@ -1726,8 +1726,7 @@ nav div.options .pure-button i {
 
 
 table.ag-commits {
-    font-family: "Source Sans Pro",Helvetica,sans-serif;
-    font-size: 13px;
+    font-size: 11.8px;
     line-height: 22px;
 /*    margin: 0;
     padding: 0;
@@ -1762,7 +1761,6 @@ table.ag-commits tr[data-status=Success]:hover td {
 }
 
 table.ag-commits th {
-    font-size: 13px;
     color: #666;
     white-space: nowrap;
     border-bottom: 2px solid #fff;
@@ -1788,16 +1786,35 @@ table.ag-commits td:first-child a:before {
     margin:0 4px 0 7px;
 }
 
-table.ag-commits tr[data-status=Started] td:first-child a:before, table.ag-commits tr[data-status=Pending] td:first-child a:before {
-    content: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCI+DQo8cGF0aCBmaWxsPSIjRTdEMTAwIiBkPSJNNSwwQzIuMjM5LDAsMCwyLjIzOCwwLDVjMCwyLjc2MSwyLjIzOSw1LDUsNWMyLjc2MiwwLDUtMi4yMzksNS01QzEwLDIuMjM4LDcuNzYyLDAsNSwwIi8+DQo8L3N2Zz4NCg0K')
+table.ag-commits tr td:first-child:before {
+    display: block;
+    content: ".";
+    color: transparent;
+    font-size: 0;
+    width: 4px;
+    height: 32px;
+    float: left;
+    margin: -5px 5px -5px 0;
 }
 
-table.ag-commits tr[data-status=Success] td:first-child a:before {
-    content: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCI+DQo8cGF0aCBmaWxsPSIjMEQ4MTM2IiBkPSJNNSwwQzIuMjM5LDAsMCwyLjI0LDAsNWMwLDIuNzYyLDIuMjM5LDUsNSw1YzIuNzYyLDAsNS0yLjIzOCw1LTVDMTAsMi4yNCw3Ljc2MiwwLDUsMCBNNC41MzUsNy44MjQNCglMMi4xMzksNS40MjVMMy42NSwzLjkxNGwwLjg4NSwwLjg4NWwyLjA0NC0yLjA0NWwxLjUxLDEuNTEzTDQuNTM1LDcuODI0eiIvPg0KPC9zdmc+DQoNCg==')
+table.ag-commits tr[data-status=Started] td:first-child:before, table.ag-commits tr[data-status=Pending] td:first-child:before {
+    background-color: #e7c600;
+    animation: progress 2s linear infinite;
+    -webkit-animation: progress 2s linear infinite;
+    animation: progress 2s linear infinite;
+    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .55) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .55) 50%, rgba(255, 255, 255, .55) 75%, transparent 75%, transparent);
+    background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, .55) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .55) 50%, rgba(255, 255, 255, .55) 75%, transparent 75%, transparent);
+    background-image: linear-gradient(-45deg, rgba(255, 255, 255, .55) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .55) 50%, rgba(255, 255, 255, .55) 75%, transparent 75%, transparent);
+    background-repeat: repeat;
+    background-size: 10px 10px;
 }
 
-table.ag-commits tr[data-status=Error] td:first-child a:before, table.ag-commits tr[data-status=Failure] td:first-child a:before, table.ag-commits tr[data-status=Killed] td:first-child a:before {
-    content: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCI+DQo8cGF0aCBmaWxsPSIjQ0QxODFCIiBkPSJNMS40NjMsMS40NjNjLTEuOTUxLDEuOTUyLTEuOTUxLDUuMTE5LDAuMDAxLDcuMDcyYzEuOTU0LDEuOTUzLDUuMTIsMS45NTMsNy4wNzEsMA0KCWMxLjk1My0xLjk1MSwxLjk1My01LjExOCwwLTcuMDcxQzYuNTgyLTAuNDg4LDMuNDE3LTAuNDg4LDEuNDYzLDEuNDYzIE03LjQ0OSwzLjc3M0w2LjIyNiw1bDEuMjI0LDEuMjI2TDYuMjI2LDcuNDQ5TDUsNi4yMjYNCglMMy43NzMsNy40NDlMMi41NSw2LjIyNkwzLjc3Myw1TDIuNTUsMy43NzNsMS4yMjUtMS4yMjVMNSwzLjc3M2wxLjIyNi0xLjIyNUw3LjQ0OSwzLjc3M3oiLz4NCjwvc3ZnPg0KDQo=')
+table.ag-commits tr[data-status=Success] td:first-child:before {
+    background-color: #038035;
+}
+
+table.ag-commits tr[data-status=Error] td:first-child:before, table.ag-commits tr[data-status=Failure] td:first-child:before, table.ag-commits tr[data-status=Killed] td:first-child:before {
+    background-color: #c00;
 }
 
 table.ag-commits td:nth-child(2) {
@@ -1827,13 +1844,12 @@ table.ag-commits td {
     white-space: nowrap;
     border-bottom: 2px solid #fff;
     text-align: left;
-    font-size: 13px;
     padding: 5px 20px 5px 0;
     vertical-align: top;
 }
 
 .cards nav {
-    font-size:13px;
+    font-size:inherit;
     padding-left: 0px;
     line-height: initial;
     min-height:initial;
